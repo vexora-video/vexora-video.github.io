@@ -16,6 +16,7 @@
     }
 
     * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
     body { margin: 0; min-width: 320px; }
     button, input { font: inherit; }
     button { color: inherit; }
@@ -104,6 +105,21 @@
     .search:focus-visible { border-color: #c8f169; }
     .search::placeholder { color: #b6b7bd; }
 
+    .topbar-actions { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+    .account-label { max-width: 180px; overflow: hidden; color: #c4c5c9; font-size: 12px; text-overflow: ellipsis; }
+    .small-button {
+      min-height: 38px;
+      padding: 0 13px;
+      border: 1px solid #55575e;
+      border-radius: 10px;
+      background: #23242a;
+      color: #fff;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .small-button.primary { border-color: #c8f169; background: #c8f169; color: #15170f; }
+
     .avatar {
       display: grid;
       place-items: center;
@@ -183,6 +199,55 @@
     .section-heading p { margin: 5px 0 0; color: #92939b; font-size: 13px; }
     .view-all { padding: 4px 0; border: 0; background: none; color: #c8f169; cursor: pointer; font-size: 13px; }
 
+    .notice {
+      margin: 0 0 14px;
+      padding: 10px 13px;
+      border: 1px solid #383a40;
+      border-radius: 10px;
+      background: #1a1b20;
+      color: #d3d4d8;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .notice[data-state="error"] { border-color: #d27979; color: #ffd1d1; }
+    .notice[data-state="success"] { border-color: #8ebc58; color: #e0ffba; }
+
+    .admin-panel {
+      margin: 0 0 34px;
+      padding: 24px;
+      border: 1px solid #3a3b42;
+      border-radius: 18px;
+      background: #17181d;
+    }
+    .admin-heading { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+    .admin-heading h2 { margin: 0; font-size: 22px; }
+    .admin-heading p, .admin-note { margin: 7px 0 0; color: #b6b7bd; font-size: 13px; line-height: 1.6; }
+    .admin-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .75fr); gap: 24px; margin-top: 21px; }
+    .admin-subsection { min-width: 0; padding: 18px; border: 1px solid #303138; border-radius: 13px; background: #1b1c21; }
+    .admin-subsection h3 { margin: 0 0 15px; font-size: 16px; }
+    .admin-form { display: grid; gap: 13px; }
+    .field { display: grid; gap: 6px; color: #e5e5e8; font-size: 12px; font-weight: 650; }
+    .field input, .field textarea, .field select {
+      width: 100%;
+      min-height: 40px;
+      padding: 9px 11px;
+      border: 1px solid #484950;
+      border-radius: 9px;
+      background: #121317;
+      color: #f5f5f6;
+      font-size: 13px;
+    }
+    .field textarea { min-height: 76px; resize: vertical; }
+    .field input::placeholder, .field textarea::placeholder { color: #b6b7bd; }
+    .field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible { border-color: #c8f169; }
+    .field-hint { color: #b6b7bd; font-size: 11px; font-weight: 400; line-height: 1.5; }
+    .checkbox-row { display: flex; align-items: start; gap: 9px; color: #f0f0f2; font-size: 13px; line-height: 1.5; }
+    .checkbox-row input { width: 17px; height: 17px; margin: 1px 0 0; accent-color: #c8f169; }
+    .user-list { display: grid; gap: 9px; max-height: 315px; overflow: auto; }
+    .user-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px; border: 1px solid #34353c; border-radius: 9px; }
+    .user-name { min-width: 0; overflow-wrap: anywhere; color: #f0f0f2; font-size: 12px; }
+    .user-role { display: block; margin-top: 3px; color: #b6b7bd; font-size: 11px; }
+
     .filters { display: flex; gap: 9px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
     .filters::-webkit-scrollbar { display: none; }
     .filter {
@@ -204,7 +269,7 @@
       gap: 24px 18px;
       margin-top: 21px;
     }
-    .video-card { min-width: 0; cursor: pointer; }
+    .video-card { min-width: 0; }
     .thumbnail {
       aspect-ratio: 16 / 10;
       position: relative;
@@ -234,9 +299,10 @@
       opacity: 0;
       background: rgba(0,0,0,.16);
       transition: opacity .2s;
+      pointer-events: none;
     }
     .video-card:hover .play-indicator,
-    .video-card:focus-visible .play-indicator { opacity: 1; }
+    .video-card:focus-within .play-indicator { opacity: 1; }
     .play-indicator span {
       display: grid;
       place-items: center;
@@ -262,6 +328,33 @@
     }
     .video-info h3 { margin: 0 0 5px; font-size: 14px; line-height: 1.4; font-weight: 650; }
     .video-info p { margin: 0; color: #92939b; font-size: 12px; line-height: 1.6; }
+    .video-title {
+      padding: 0;
+      border: 0;
+      background: none;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      text-align: left;
+    }
+    .play-video {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      padding-left: 3px;
+      border: 0;
+      border-radius: 50%;
+      background: #c8f169;
+      color: #15170f;
+      cursor: pointer;
+      font-size: 17px;
+      pointer-events: auto;
+    }
+    .video-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 7px; }
+    .video-badge { padding: 3px 7px; border-radius: 999px; background: #2a2b31; color: #f0f0f2; font-size: 10px; }
+    .video-badge.locked { background: #423c60; color: #e4dfff; }
+    .video-admin-action { margin-top: 9px; }
     .empty { grid-column: 1 / -1; padding: 42px 10px; color: #a5a6ad; text-align: center; }
 
     dialog {
@@ -276,12 +369,20 @@
       box-shadow: 0 24px 90px rgba(0,0,0,.7);
     }
     dialog::backdrop { background: rgba(0,0,0,.78); backdrop-filter: blur(5px); }
+    #auth-dialog { max-width: 480px; }
     .player { display: block; width: 100%; max-height: 72vh; background: #000; }
     .player-details { display: flex; justify-content: space-between; align-items: start; gap: 20px; padding: 18px 22px 20px; }
     .player-details h2 { margin: 0 0 5px; font-size: 18px; }
     .player-details p { margin: 0; color: #a5a6ad; font-size: 13px; }
     .close-player { width: 34px; height: 34px; flex: 0 0 auto; border: 1px solid #383940; border-radius: 50%; background: #23242a; cursor: pointer; font-size: 18px; }
     .player-status { margin-top: 10px !important; color: #d3f795 !important; }
+    .dialog-content { padding: 22px; }
+    .dialog-content h2 { margin: 0 0 7px; font-size: 21px; }
+    .dialog-content > p { margin: 0 0 18px; color: #b6b7bd; font-size: 13px; line-height: 1.6; }
+    .dialog-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 15px; }
+    .link-button { padding: 0; border: 0; background: none; color: #d3f795; cursor: pointer; font-size: 12px; text-decoration: underline; }
+    .auth-status { min-height: 20px; margin: 12px 0 0; color: #d3f795; font-size: 12px; line-height: 1.5; }
+    .disclosure { padding: 0 22px 18px; color: #b6b7bd; font-size: 12px; line-height: 1.5; }
     footer { padding-top: 38px; color: #a5a6ad; font-size: 12px; text-align: center; }
 
     @media (prefers-reduced-motion: reduce) {
@@ -300,11 +401,15 @@
     @media (max-width: 680px) {
       .topbar { height: 62px; gap: 14px; padding: 0 18px; }
       .main-nav { display: none; }
+      .account-label { display: none; }
+      .small-button { min-height: 36px; padding: 0 10px; }
       .search { width: auto; min-width: 0; flex: 1; }
       main { padding: 22px 18px 50px; }
       .hero { min-height: 360px; padding: 25px; background-position: 58% center; }
       .hero p { font-size: 13px; }
       .section-heading { margin-top: 34px; }
+      .admin-panel { padding: 15px; }
+      .admin-grid { grid-template-columns: 1fr; gap: 14px; }
       .video-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 21px 12px; }
       .video-info { gap: 8px; }
       .channel-avatar { width: 29px; height: 29px; }
@@ -317,6 +422,14 @@
       .hero { min-height: 330px; padding: 20px; }
       .video-grid { grid-template-columns: 1fr; }
     }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -325,33 +438,92 @@
     <a class="brand" href="#" aria-label="Frame home"><span class="brand-mark" aria-hidden="true">▶</span>frame</a>
     <nav class="main-nav" aria-label="Main navigation">
       <a class="active" href="#discover">Discover</a>
-      <a href="#videos">Explore</a>
-      <a href="#videos">My list</a>
+      <a href="#videos">Videos</a>
+      <a id="admin-nav" href="#admin-panel" hidden>Admin</a>
     </nav>
     <input class="search" id="search" type="search" placeholder="Search videos..." aria-label="Search videos">
-    <div class="avatar" role="img" aria-label="Profile for JD">JD</div>
+    <div class="topbar-actions">
+      <span class="account-label" id="account-label"></span>
+      <button class="small-button primary" id="auth-open" type="button">Sign in / Join</button>
+      <button class="small-button" id="signout-button" type="button" hidden>Sign out</button>
+    </div>
   </header>
 
   <main id="main-content" tabindex="-1">
-    <section class="hero" aria-labelledby="hero-title">
+    <p class="notice" id="app-status" role="status" aria-live="polite" hidden></p>
+    <section class="hero" id="discover" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <span class="eyebrow">Featured film</span>
+        <span class="eyebrow">A place for good stories</span>
         <h1 id="hero-title">A little more<br>outside.</h1>
-        <p>Slow down, take the scenic route, and find a fresh perspective in this week's featured short.</p>
+        <p>Find a fresh perspective, discover a new favorite, and make room for stories worth watching.</p>
         <div class="hero-actions">
-          <button class="button" id="featured-play"><span aria-hidden="true">▶</span> Play featured</button>
-          <button class="button secondary" id="browse-button">Browse videos</button>
+          <button class="button" id="featured-play" type="button"><span aria-hidden="true">▶</span> Play featured</button>
+          <button class="button secondary" id="browse-button" type="button">Browse videos</button>
         </div>
+      </div>
+    </section>
+
+    <section class="admin-panel" id="admin-panel" aria-labelledby="admin-title" hidden>
+      <div class="admin-heading">
+        <div>
+          <h2 id="admin-title">Admin studio</h2>
+          <p>Add videos, control member access, and manage user roles.</p>
+        </div>
+      </div>
+      <div class="admin-grid">
+        <section class="admin-subsection" aria-labelledby="add-video-title">
+          <h3 id="add-video-title">Add a video</h3>
+          <form class="admin-form" id="video-form">
+            <label class="field">Title
+              <input name="title" maxlength="160" required>
+            </label>
+            <label class="field">Description
+              <textarea name="description" maxlength="2000"></textarea>
+            </label>
+            <label class="field">Category
+              <input name="category" maxlength="40" placeholder="Travel, nature, music..." required>
+            </label>
+            <label class="field">Video source
+              <select name="source_type" id="source-type">
+                <option value="url">Direct video URL</option>
+                <option value="upload">Upload a video file</option>
+              </select>
+            </label>
+            <label class="field" id="video-url-field">Direct video URL
+              <input name="video_url" type="url" inputmode="url" placeholder="https://example.com/video.mp4" required>
+              <span class="field-hint">Use a direct HTTPS link to an MP4, WebM, or other browser-playable video file. YouTube watch-page links are not direct video files.</span>
+            </label>
+            <label class="field" id="video-file-field" hidden>Video file
+              <input name="video_file" type="file" accept="video/mp4,video/webm,video/ogg,video/quicktime">
+              <span class="field-hint">Private storage upload limit: 50 MB per file.</span>
+            </label>
+            <label class="field">Thumbnail URL (optional)
+              <input name="thumbnail_url" type="url" inputmode="url" placeholder="https://example.com/thumbnail.jpg">
+            </label>
+            <label class="checkbox-row">
+              <input name="is_locked" type="checkbox">
+              <span>Lock this video: require a signed-in account to view it in Frame.</span>
+            </label>
+            <p class="field-hint">External video links can still be shared outside Frame. Uploaded files use private storage and signed playback links.</p>
+            <button class="button" id="save-video" type="submit">Add video</button>
+            <p class="auth-status" id="video-form-status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+        <section class="admin-subsection" aria-labelledby="users-title">
+          <h3 id="users-title">Users and roles</h3>
+          <div class="user-list" id="user-list" aria-live="polite"></div>
+          <p class="admin-note">New accounts start as regular users. Promote trusted accounts only.</p>
+        </section>
       </div>
     </section>
 
     <section id="videos" aria-labelledby="videos-title">
       <div class="section-heading">
         <div>
-          <h2 id="videos-title">Made for your next break</h2>
-          <p>Good stories, hand-picked for you.</p>
+          <h2 id="videos-title">Videos for your next break</h2>
+          <p>Discover stories shared by the community.</p>
         </div>
-        <button class="view-all" id="clear-filters">View all <span aria-hidden="true">→</span></button>
+        <button class="view-all" id="clear-filters" type="button">View all <span aria-hidden="true">→</span></button>
       </div>
       <div class="filters" id="filters" role="group" aria-label="Filter videos"></div>
       <p class="visually-hidden" id="results-status" role="status" aria-live="polite" aria-atomic="true"></p>
@@ -360,162 +532,522 @@
     <footer>Take a break. Find your next favorite.</footer>
   </main>
 
+  <dialog id="auth-dialog" aria-labelledby="auth-title">
+    <div class="dialog-content">
+      <h2 id="auth-title">Welcome to Frame</h2>
+      <p id="auth-description">Sign in or create a free account to watch member videos.</p>
+      <form class="admin-form" id="auth-form">
+        <label class="field" id="display-name-field" hidden>Name
+          <input name="display_name" maxlength="80" autocomplete="name">
+        </label>
+        <label class="field">Email
+          <input name="email" type="email" autocomplete="email" required>
+        </label>
+        <label class="field">Password
+          <input name="password" type="password" minlength="8" autocomplete="current-password" required>
+          <span class="field-hint">Use at least 8 characters.</span>
+        </label>
+        <button class="button" id="auth-submit" type="submit">Sign in</button>
+      </form>
+      <p class="auth-status" id="auth-status" role="status" aria-live="polite"></p>
+      <div class="dialog-actions">
+        <button class="link-button" id="auth-mode-toggle" type="button">Create an account</button>
+        <button class="link-button" id="reset-password" type="button">Forgot password?</button>
+        <button class="close-player" id="close-auth" type="button" aria-label="Close sign-in dialog">×</button>
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="video-dialog" aria-labelledby="player-title">
     <video class="player" id="video-player" aria-label="Video player" controls playsinline></video>
     <div class="player-details">
       <div>
         <h2 id="player-title"></h2>
-        <p id="player-channel"></p>
+        <p id="player-description"></p>
         <p class="player-status" id="player-status" role="status" aria-live="polite"></p>
-        <p>Captions are not available for these sample videos.</p>
       </div>
-      <button class="close-player" id="close-player" aria-label="Close video">×</button>
+      <button class="close-player" id="close-player" type="button" aria-label="Close video">×</button>
     </div>
+    <p class="disclosure">Locking a video limits access through Frame. External URLs and already-issued upload links may still be shared separately.</p>
   </dialog>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const videos = [
-      {
-        title: "The Quiet Beauty of the Mountains",
-        channel: "Wild Places", initials: "WP", color: "#b8d28b",
-        category: "Nature", duration: "12:48", views: "28K views · 2 days ago",
-        image: "photo-1464822759023-fed622ff2c3b",
-        source: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
-      },
-      {
-        title: "A Sunday Morning in Copenhagen",
-        channel: "Slow Roam", initials: "SR", color: "#eac6a0",
-        category: "Travel", duration: "08:21", views: "16K views · 1 week ago",
-        image: "photo-1513622470522-26c3c8a854bc",
-        source: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
-      },
-      {
-        title: "Making Space for the Things You Love",
-        channel: "Good Form", initials: "GF", color: "#c5b6e8",
-        category: "Design", duration: "15:06", views: "42K views · 3 days ago",
-        image: "photo-1494438639946-1ebd1d20bf85",
-        source: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
-      },
-      {
-        title: "The Perfect Cup: From Bean to Brew",
-        channel: "Daily Ritual", initials: "DR", color: "#e9c47b",
-        category: "Food", duration: "06:54", views: "9.2K views · 5 days ago",
-        image: "photo-1445116572660-236099ec97a0",
-        source: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
-      },
-      {
-        title: "Finding Your Rhythm on the Open Road",
-        channel: "Motion Studio", initials: "MS", color: "#9fc9d5",
-        category: "Travel", duration: "10:32", views: "31K views · 6 days ago",
-        image: "photo-1500530855697-b586d89ba3ee",
-        source: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
-      },
-      {
-        title: "A Tiny Cabin in the Big Woods",
-        channel: "Wild Places", initials: "WP", color: "#b8d28b",
-        category: "Nature", duration: "18:17", views: "54K views · 2 weeks ago",
-        image: "photo-1448375240586-882707db888b",
-        source: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
-      },
-      {
-        title: "Objects with a Story to Tell",
-        channel: "Good Form", initials: "GF", color: "#c5b6e8",
-        category: "Design", duration: "09:43", views: "12K views · 4 days ago",
-        image: "photo-1490312278390-ab64016e0aa9",
-        source: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
-      },
-      {
-        title: "A Table Set for Friends",
-        channel: "Daily Ritual", initials: "DR", color: "#e9c47b",
-        category: "Food", duration: "07:19", views: "21K views · 1 day ago",
-        image: "photo-1414235077428-338989a2e8c0",
-        source: "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
-      }
-    ];
+    const SUPABASE_URL = "https://qinbbldzhifsschtnscr.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_f4jaJaeWLgx4i-u2MAyGcg_XfKavO2f";
+    const supabaseClient = window.supabase?.createClient
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+      : null;
 
-    const categories = ["All", "Travel", "Nature", "Design", "Food"];
     const grid = document.getElementById("video-grid");
     const filters = document.getElementById("filters");
     const search = document.getElementById("search");
-    const dialog = document.getElementById("video-dialog");
+    const authDialog = document.getElementById("auth-dialog");
+    const videoDialog = document.getElementById("video-dialog");
     const player = document.getElementById("video-player");
-    const resultsStatus = document.getElementById("results-status");
+    const appStatus = document.getElementById("app-status");
+    const authStatus = document.getElementById("auth-status");
+    const videoFormStatus = document.getElementById("video-form-status");
     const playerStatus = document.getElementById("player-status");
+    const categories = new Set();
     let activeCategory = "All";
+    let currentUser = null;
+    let isAdmin = false;
+    let videos = [];
     let returnFocusElement = null;
+    let authMode = "signin";
+
+    function setStatus(element, message, state = "info") {
+      element.textContent = message;
+      if (element === appStatus) {
+        element.dataset.state = state;
+        element.hidden = !message;
+      }
+    }
+
+    function safeHttpsUrl(value) {
+      if (!value) return null;
+      const url = new URL(value);
+      if (url.protocol !== "https:") throw new Error("Please use an HTTPS URL.");
+      return url.href;
+    }
+
+    function setAuthMode(mode) {
+      authMode = mode;
+      const signingUp = mode === "signup";
+      document.getElementById("auth-title").textContent = signingUp ? "Create your account" : "Welcome to Frame";
+      document.getElementById("auth-description").textContent = signingUp
+        ? "Create a free account to watch member videos."
+        : "Sign in to your account to watch member videos.";
+      document.getElementById("display-name-field").hidden = !signingUp;
+      document.getElementById("auth-form").elements.display_name.required = signingUp;
+      document.getElementById("auth-form").elements.password.autocomplete = signingUp ? "new-password" : "current-password";
+      document.getElementById("auth-submit").textContent = signingUp ? "Create account" : "Sign in";
+      document.getElementById("auth-mode-toggle").textContent = signingUp ? "Already have an account? Sign in" : "Create an account";
+      document.getElementById("reset-password").hidden = signingUp;
+      setStatus(authStatus, "");
+    }
 
     function renderFilters() {
-      filters.innerHTML = categories.map(category =>
-        `<button class="filter${category === activeCategory ? " selected" : ""}" type="button" aria-label="Filter by ${category}" aria-pressed="${category === activeCategory}">${category}</button>`
-      ).join("");
-      filters.querySelectorAll(".filter").forEach(button => {
+      filters.replaceChildren();
+      const names = ["All", ...Array.from(categories).sort((a, b) => a.localeCompare(b))];
+      names.forEach(category => {
+        const button = document.createElement("button");
+        button.className = `filter${category === activeCategory ? " selected" : ""}`;
+        button.type = "button";
+        button.textContent = category;
+        button.setAttribute("aria-label", `Filter by ${category}`);
+        button.setAttribute("aria-pressed", String(category === activeCategory));
         button.addEventListener("click", () => {
-          activeCategory = button.textContent;
+          activeCategory = category;
           renderFilters();
           renderVideos();
         });
+        filters.append(button);
       });
+    }
+
+    function createVideoCard(video) {
+      const article = document.createElement("article");
+      article.className = "video-card";
+
+      const thumbnail = document.createElement("div");
+      thumbnail.className = "thumbnail";
+      const image = document.createElement("img");
+      image.alt = "";
+      image.loading = "lazy";
+      const fallbackThumbnail = "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=700&q=80";
+      try {
+        image.src = safeHttpsUrl(video.thumbnail_url) || fallbackThumbnail;
+      } catch (error) {
+        image.src = fallbackThumbnail;
+        setStatus(appStatus, `A thumbnail URL could not be used: ${error.message}`, "error");
+      }
+      thumbnail.append(image);
+
+      const indicator = document.createElement("span");
+      indicator.className = "play-indicator";
+      const playButton = document.createElement("button");
+      playButton.className = "play-video";
+      playButton.type = "button";
+      playButton.setAttribute("aria-label", `Play ${video.title}`);
+      playButton.textContent = "▶";
+      playButton.addEventListener("click", () => openVideo(video));
+      indicator.append(playButton);
+      thumbnail.append(indicator);
+      article.append(thumbnail);
+
+      const info = document.createElement("div");
+      info.className = "video-info";
+      const content = document.createElement("div");
+      const heading = document.createElement("h3");
+      const titleButton = document.createElement("button");
+      titleButton.className = "video-title";
+      titleButton.type = "button";
+      titleButton.textContent = video.title;
+      titleButton.addEventListener("click", () => openVideo(video));
+      heading.append(titleButton);
+      content.append(heading);
+
+      const description = document.createElement("p");
+      description.textContent = video.description || video.category;
+      content.append(description);
+
+      const badges = document.createElement("div");
+      badges.className = "video-badges";
+      const categoryBadge = document.createElement("span");
+      categoryBadge.className = "video-badge";
+      categoryBadge.textContent = video.category;
+      badges.append(categoryBadge);
+      if (video.is_locked) {
+        const lockBadge = document.createElement("span");
+        lockBadge.className = "video-badge locked";
+        lockBadge.textContent = "Members";
+        badges.append(lockBadge);
+      }
+      content.append(badges);
+      info.append(content);
+      article.append(info);
+
+      if (isAdmin) {
+        const lockButton = document.createElement("button");
+        lockButton.className = "small-button video-admin-action";
+        lockButton.type = "button";
+        lockButton.textContent = video.is_locked ? "Unlock video" : "Lock video";
+        lockButton.setAttribute("aria-label", `${video.is_locked ? "Unlock" : "Lock"} ${video.title}`);
+        lockButton.addEventListener("click", () => toggleVideoLock(video));
+        article.append(lockButton);
+      }
+      return article;
     }
 
     function renderVideos() {
       const query = search.value.trim().toLowerCase();
       const matches = videos.filter(video =>
         (activeCategory === "All" || video.category === activeCategory) &&
-        `${video.title} ${video.channel} ${video.category}`.toLowerCase().includes(query)
+        `${video.title} ${video.description || ""} ${video.category}`.toLowerCase().includes(query)
       );
-      resultsStatus.textContent = `${matches.length} ${matches.length === 1 ? "video" : "videos"} found.`;
+      grid.replaceChildren();
+      matches.forEach(video => grid.append(createVideoCard(video)));
+      document.getElementById("results-status").textContent = `${matches.length} ${matches.length === 1 ? "video" : "videos"} found.`;
 
       if (!matches.length) {
-        grid.innerHTML = '<div class="empty">No videos found. Try another search or category.</div>';
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = currentUser
+          ? "No videos yet. Admins can add the first one from Admin studio."
+          : "No public videos yet. Sign in to see member videos.";
+        grid.append(empty);
+      }
+    }
+
+    async function loadVideos() {
+      const { data, error } = await supabaseClient
+        .from("videos")
+        .select("id,title,description,category,thumbnail_url,source_type,video_url,storage_path,is_locked,created_at")
+        .order("created_at", { ascending: false });
+      if (error) {
+        setStatus(appStatus, `Could not load videos. Check that supabase.sql has been run: ${error.message}`, "error");
+        videos = [];
+      } else {
+        videos = data || [];
+        setStatus(appStatus, "");
+      }
+      categories.clear();
+      videos.forEach(video => categories.add(video.category));
+      if (activeCategory !== "All" && !categories.has(activeCategory)) activeCategory = "All";
+      renderFilters();
+      renderVideos();
+    }
+
+    async function loadUsers() {
+      const list = document.getElementById("user-list");
+      list.replaceChildren();
+      const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("id,display_name,role,created_at")
+        .order("created_at", { ascending: true });
+      if (error) {
+        setStatus(appStatus, `Could not load user roles: ${error.message}`, "error");
+        return;
+      }
+      data.forEach(profile => {
+        const row = document.createElement("div");
+        row.className = "user-row";
+        const name = document.createElement("div");
+        name.className = "user-name";
+        name.textContent = profile.display_name || `Member ${profile.id.slice(0, 8)}`;
+        const role = document.createElement("span");
+        role.className = "user-role";
+        role.textContent = profile.role;
+        name.append(role);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "small-button";
+        button.textContent = profile.role === "admin" ? "Make user" : "Make admin";
+        button.disabled = profile.id === currentUser.id;
+        button.setAttribute("aria-label", `${button.textContent}: ${name.firstChild.textContent}`);
+        button.addEventListener("click", () => changeUserRole(profile));
+        row.append(name, button);
+        list.append(row);
+      });
+      if (!data.length) list.textContent = "No accounts yet.";
+    }
+
+    async function refreshApp(user) {
+      currentUser = user;
+      isAdmin = false;
+      let accountError = "";
+      document.getElementById("account-label").textContent = user ? user.email : "";
+      document.getElementById("auth-open").hidden = Boolean(user);
+      document.getElementById("signout-button").hidden = !user;
+
+      if (user) {
+        const { data, error } = await supabaseClient
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+        if (error) {
+          accountError = `Signed in, but role lookup failed: ${error.message}`;
+        } else {
+          isAdmin = data.role === "admin";
+        }
+        authDialog.close();
+      }
+
+      document.getElementById("admin-panel").hidden = !isAdmin;
+      document.getElementById("admin-nav").hidden = !isAdmin;
+      await loadVideos();
+      if (isAdmin) await loadUsers();
+      if (accountError) setStatus(appStatus, accountError, "error");
+    }
+
+    async function openVideo(video) {
+      if (video.is_locked && !currentUser) {
+        setAuthMode("signin");
+        setStatus(authStatus, "Sign in to watch this member video.");
+        authDialog.showModal();
         return;
       }
 
-      grid.innerHTML = matches.map(video => {
-        const index = videos.indexOf(video);
-        return `
-          <article class="video-card" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Play ${video.title}" data-index="${index}">
-            <div class="thumbnail">
-              <img src="https://images.unsplash.com/${video.image}?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy">
-              <span class="play-indicator"><span aria-hidden="true">▶</span></span>
-              <span class="duration">${video.duration}</span>
-            </div>
-            <div class="video-info">
-              <span class="channel-avatar" aria-hidden="true" style="background:${video.color}">${video.initials}</span>
-              <div><h3>${video.title}</h3><p>${video.channel}<br>${video.views}</p></div>
-            </div>
-          </article>`;
-      }).join("");
-
-      grid.querySelectorAll(".video-card").forEach(card => {
-        const play = () => openVideo(videos[Number(card.dataset.index)]);
-        card.addEventListener("click", play);
-        card.addEventListener("keydown", event => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            play();
-          }
-        });
-      });
-    }
-
-    function openVideo(video) {
       returnFocusElement = document.activeElement;
       document.getElementById("player-title").textContent = video.title;
-      document.getElementById("player-channel").textContent = `${video.channel} · ${video.views}`;
-      playerStatus.textContent = "";
-      player.src = video.source;
-      dialog.showModal();
-      player.play().catch(() => {
-        if (dialog.open) playerStatus.textContent = "Playback could not start. Try using the video controls to play.";
-      });
+      document.getElementById("player-description").textContent = video.description || video.category;
+      setStatus(playerStatus, "");
+      try {
+        let source;
+        if (video.source_type === "upload") {
+          const { data, error } = await supabaseClient.storage
+            .from("videos-private")
+            .createSignedUrl(video.storage_path, 3600);
+          if (error) throw error;
+          source = data.signedUrl;
+        } else {
+          source = safeHttpsUrl(video.video_url);
+        }
+        player.src = source;
+        player.load();
+        videoDialog.showModal();
+        player.play().catch(() => {
+          if (videoDialog.open) setStatus(playerStatus, "Playback could not start. Use the video controls to try again.");
+        });
+      } catch (error) {
+        setStatus(appStatus, `Could not open this video: ${error.message}`, "error");
+      }
+    }
+
+    async function toggleVideoLock(video) {
+      try {
+        const { error } = await supabaseClient
+          .from("videos")
+          .update({ is_locked: !video.is_locked })
+          .eq("id", video.id);
+        if (error) throw error;
+        await loadVideos();
+        setStatus(appStatus, video.is_locked ? "Video unlocked." : "Video locked for signed-in users.", "success");
+      } catch (error) {
+        setStatus(appStatus, `Could not change video access: ${error.message}`, "error");
+      }
+    }
+
+    async function changeUserRole(profile) {
+      const role = profile.role === "admin" ? "user" : "admin";
+      try {
+        const { error } = await supabaseClient.from("profiles").update({ role }).eq("id", profile.id);
+        if (error) throw error;
+        await loadUsers();
+        setStatus(appStatus, `Account role changed to ${role}.`, "success");
+      } catch (error) {
+        setStatus(appStatus, `Could not update this account's role: ${error.message}`, "error");
+      }
     }
 
     function closeVideo() {
-      if (dialog.open) dialog.close();
+      if (videoDialog.open) videoDialog.close();
     }
 
+    document.getElementById("auth-open").addEventListener("click", () => {
+      setAuthMode("signin");
+      authDialog.showModal();
+    });
+    document.getElementById("close-auth").addEventListener("click", () => authDialog.close());
+    document.getElementById("auth-mode-toggle").addEventListener("click", () => {
+      setAuthMode(authMode === "signin" ? "signup" : "signin");
+    });
+    document.getElementById("auth-form").addEventListener("submit", async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const email = form.elements.email.value.trim();
+      const password = form.elements.password.value;
+      const button = document.getElementById("auth-submit");
+      button.disabled = true;
+      setStatus(authStatus, authMode === "signup" ? "Creating your account..." : "Signing in...");
+      try {
+        const result = authMode === "signup"
+          ? await supabaseClient.auth.signUp({
+              email,
+              password,
+              options: { data: { display_name: form.elements.display_name.value.trim() } }
+            })
+          : await supabaseClient.auth.signInWithPassword({ email, password });
+        if (result.error) throw result.error;
+        if (authMode === "signup" && !result.data.session) {
+          setStatus(authStatus, "Check your email to confirm your account, then sign in.");
+        } else {
+          setStatus(authStatus, authMode === "signup" ? "Account created." : "Signed in.");
+          await refreshApp(result.data.user);
+        }
+      } catch (error) {
+        setStatus(authStatus, error.message);
+      } finally {
+        button.disabled = false;
+      }
+    });
+    document.getElementById("reset-password").addEventListener("click", async () => {
+      const email = document.getElementById("auth-form").elements.email.value.trim();
+      if (!email) {
+        setStatus(authStatus, "Enter your email address first.");
+        document.getElementById("auth-form").elements.email.focus();
+        return;
+      }
+      try {
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}${window.location.pathname}`
+        });
+        setStatus(authStatus, error ? error.message : "If that account exists, a password reset email is on its way.");
+      } catch (error) {
+        setStatus(authStatus, `Could not request a password reset: ${error.message}`);
+      }
+    });
+    document.getElementById("signout-button").addEventListener("click", async () => {
+      try {
+        const { error } = await supabaseClient.auth.signOut();
+        if (error) throw error;
+        setStatus(appStatus, "You have signed out.", "success");
+      } catch (error) {
+        setStatus(appStatus, `Could not sign out: ${error.message}`, "error");
+      }
+    });
+
+    document.getElementById("source-type").addEventListener("change", event => {
+      const uploading = event.target.value === "upload";
+      document.getElementById("video-url-field").hidden = uploading;
+      document.getElementById("video-file-field").hidden = !uploading;
+      document.querySelector('[name="video_url"]').required = !uploading;
+      document.querySelector('[name="video_file"]').required = uploading;
+    });
+
+    document.getElementById("video-form").addEventListener("submit", async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const button = document.getElementById("save-video");
+      const sourceType = form.elements.source_type.value;
+      const file = form.elements.video_file.files[0];
+      const id = crypto.randomUUID();
+      let storagePath = null;
+
+      if (sourceType === "upload") {
+        if (!file) {
+          setStatus(videoFormStatus, "Choose a video file to upload.");
+          return;
+        }
+        if (file.size > 50 * 1024 * 1024) {
+          setStatus(videoFormStatus, "This file is larger than the 50 MB upload limit.");
+          return;
+        }
+        if (!["video/mp4", "video/webm", "video/ogg", "video/quicktime"].includes(file.type)) {
+          setStatus(videoFormStatus, "Use an MP4, WebM, Ogg, or QuickTime video file.");
+          return;
+        }
+        const safeName = file.name.replace(/[^a-zA-Z0-9_-]/g, "_") || "video";
+        storagePath = `${id}/${safeName}`;
+      }
+
+      let videoUrl = null;
+      let thumbnailUrl = null;
+      try {
+        if (sourceType === "url") videoUrl = safeHttpsUrl(form.elements.video_url.value.trim());
+        if (form.elements.thumbnail_url.value.trim()) thumbnailUrl = safeHttpsUrl(form.elements.thumbnail_url.value.trim());
+      } catch (error) {
+        setStatus(videoFormStatus, error.message);
+        return;
+      }
+
+      button.disabled = true;
+      setStatus(videoFormStatus, sourceType === "upload" ? "Saving details and uploading file..." : "Adding video...");
+      const videoRecord = {
+        id,
+        title: form.elements.title.value.trim(),
+        description: form.elements.description.value.trim(),
+        category: form.elements.category.value.trim(),
+        thumbnail_url: thumbnailUrl,
+        source_type: sourceType,
+        video_url: videoUrl,
+        storage_path: storagePath,
+        is_locked: form.elements.is_locked.checked,
+        created_by: currentUser.id
+      };
+
+      try {
+        const { error: insertError } = await supabaseClient.from("videos").insert(videoRecord);
+        if (insertError) throw insertError;
+
+        if (sourceType === "upload") {
+          const { error: uploadError } = await supabaseClient.storage
+            .from("videos-private")
+            .upload(storagePath, file, { contentType: file.type, upsert: false });
+          if (uploadError) {
+            const { error: cleanupError } = await supabaseClient.from("videos").delete().eq("id", id);
+            if (cleanupError) {
+              throw new Error(`${uploadError.message}. Also failed to remove the video entry: ${cleanupError.message}`);
+            }
+            throw uploadError;
+          }
+        }
+
+        form.reset();
+        document.getElementById("video-url-field").hidden = false;
+        document.getElementById("video-file-field").hidden = true;
+        form.elements.video_url.required = true;
+        form.elements.video_file.required = false;
+        setStatus(videoFormStatus, "Video added.", "success");
+        await loadVideos();
+      } catch (error) {
+        setStatus(videoFormStatus, `Could not add video: ${error.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    });
+
     search.addEventListener("input", renderVideos);
-    document.getElementById("featured-play").addEventListener("click", () => openVideo(videos[0]));
+    document.getElementById("featured-play").addEventListener("click", () => {
+      if (!videos.length) {
+        setStatus(appStatus, "There are no videos to play yet.");
+        return;
+      }
+      openVideo(videos[0]);
+    });
     document.getElementById("browse-button").addEventListener("click", () => {
       const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
       document.getElementById("videos").scrollIntoView({ behavior });
@@ -527,32 +1059,48 @@
       renderVideos();
     });
     document.getElementById("close-player").addEventListener("click", closeVideo);
-    dialog.addEventListener("cancel", event => {
+    videoDialog.addEventListener("cancel", event => {
       event.preventDefault();
       closeVideo();
     });
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && dialog.open) {
+      if (event.key === "Escape" && videoDialog.open) {
         event.preventDefault();
         closeVideo();
       }
     }, true);
-    dialog.addEventListener("click", event => {
-      if (event.target === dialog) closeVideo();
+    videoDialog.addEventListener("click", event => {
+      if (event.target === videoDialog) closeVideo();
     });
-    dialog.addEventListener("close", () => {
+    videoDialog.addEventListener("close", () => {
       player.pause();
       player.removeAttribute("src");
       player.load();
       if (returnFocusElement && returnFocusElement.isConnected) returnFocusElement.focus();
       returnFocusElement = null;
     });
-    player.addEventListener("error", () => {
-      playerStatus.textContent = "This video could not be loaded. Please try again later.";
-    });
+    player.addEventListener("error", () => setStatus(playerStatus, "This video could not be loaded. Please try again later."));
 
-    renderFilters();
-    renderVideos();
+    async function initialize() {
+      if (!supabaseClient) {
+        setStatus(appStatus, "The sign-in service could not load. Check your connection and reload the page.", "error");
+        return;
+      }
+      const { data: authState, error: sessionError } = await supabaseClient.auth.getSession();
+      await refreshApp(authState.session?.user || null);
+      if (sessionError) setStatus(appStatus, `Could not restore your sign-in: ${sessionError.message}`, "error");
+      supabaseClient.auth.onAuthStateChange((_event, session) => {
+        setTimeout(() => {
+          refreshApp(session?.user || null).catch(error =>
+            setStatus(appStatus, `Could not refresh the account: ${error.message}`, "error")
+          );
+        }, 0);
+      });
+    }
+
+    initialize().catch(error => {
+      setStatus(appStatus, `Could not connect to the account service: ${error.message}`, "error");
+    });
   </script>
 </body>
 </html>
