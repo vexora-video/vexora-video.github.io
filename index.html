@@ -499,6 +499,7 @@
             </label>
             <label class="field">Thumbnail URL (optional)
               <input name="thumbnail_url" type="url" inputmode="url" placeholder="https://example.com/thumbnail.jpg">
+              <span class="field-hint">Leave blank to use a frame from the video automatically. Some external video hosts do not allow frame capture.</span>
             </label>
             <label class="checkbox-row">
               <input name="is_locked" type="checkbox">
@@ -612,6 +613,45 @@
       return url.href;
     }
 
+    function waitForVideoEvent(video, eventName) {
+      return new Promise((resolve, reject) => {
+        const timeout = window.setTimeout(() => { cleanup(); reject(new Error("Timed out while reading the video.")); }, 10000);
+        const cleanup = () => { window.clearTimeout(timeout); video.removeEventListener(eventName, onReady); video.removeEventListener("error", onError); };
+        const onReady = () => { cleanup(); resolve(); };
+        const onError = () => { cleanup(); reject(new Error("The video could not be read for thumbnail capture.")); };
+        video.addEventListener(eventName, onReady, { once: true }); video.addEventListener("error", onError, { once: true });
+      });
+    }
+
+    async function captureVideoThumbnail(source, isFile) {
+      const objectUrl = isFile ? URL.createObjectURL(source) : null;
+      const video = document.createElement("video");
+      video.muted = true; video.playsInline = true; video.preload = "auto";
+      if (!isFile) video.crossOrigin = "anonymous";
+      try {
+        const metadataReady = waitForVideoEvent(video, "loadedmetadata");
+        video.src = objectUrl || source; video.load(); await metadataReady;
+        if (!video.videoWidth || !video.videoHeight) throw new Error("The video has no frame to use as a thumbnail.");
+        const frameTime = Number.isFinite(video.duration) && video.duration > 0 ? Math.min(1, video.duration / 2) : 0;
+        if (frameTime > 0) { const frameReady = waitForVideoEvent(video, "seeked"); video.currentTime = frameTime; await frameReady; }
+        else if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) await waitForVideoEvent(video, "loadeddata");
+        const scale = Math.min(1, 480 / Math.max(video.videoWidth, video.videoHeight));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(video.videoWidth * scale)); canvas.height = Math.max(1, Math.round(video.videoHeight * scale));
+        canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+        return canvas.toDataURL("image/jpeg", 0.72);
+      } finally { video.pause(); video.removeAttribute("src"); video.load(); if (objectUrl) URL.revokeObjectURL(objectUrl); }
+    }
+
+    function safeThumbnailUrl(value) {
+      const dataImagePrefix = "data:image/jpeg;base64,";
+      if (value && value.startsWith(dataImagePrefix)) {
+        if (value.length > 200000) throw new Error("The generated thumbnail is too large.");
+        return value;
+      }
+      return safeHttpsUrl(value);
+    }
+
     function setAuthMode(mode) {
       authMode = mode;
       const signingUp = mode === "signup";
@@ -658,7 +698,7 @@
       image.loading = "lazy";
       const fallbackThumbnail = "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=700&q=80";
       try {
-        image.src = safeHttpsUrl(video.thumbnail_url) || fallbackThumbnail;
+        image.src = safeThumbnailUrl(video.thumbnail_url) || fallbackThumbnail;
       } catch (error) {
         image.src = fallbackThumbnail;
         setStatus(appStatus, `A thumbnail URL could not be used: ${error.message}`, "error");
@@ -988,13 +1028,22 @@
       let thumbnailUrl = null;
       try {
         if (sourceType === "url") videoUrl = safeHttpsUrl(form.elements.video_url.value.trim());
-        if (form.elements.thumbnail_url.value.trim()) thumbnailUrl = safeHttpsUrl(form.elements.thumbnail_url.value.trim());
+        if (form.elements.thumbnail_url.value.trim()) thumbnailUrl = safeThumbnailUrl(form.elements.thumbnail_url.value.trim());
       } catch (error) {
         setStatus(videoFormStatus, error.message);
         return;
       }
 
       button.disabled = true;
+      let thumbnailWarning = "";
+      if (!thumbnailUrl) {
+        setStatus(videoFormStatus, "Capturing a frame for the thumbnail...");
+        try {
+          thumbnailUrl = await captureVideoThumbnail(sourceType === "upload" ? file : videoUrl, sourceType === "upload");
+        } catch (error) {
+          thumbnailWarning = " The automatic thumbnail could not be captured: " + error.message;
+        }
+      }
       setStatus(videoFormStatus, sourceType === "upload" ? "Saving details and uploading file..." : "Adding video...");
       const videoRecord = {
         id,
@@ -1031,7 +1080,7 @@
         document.getElementById("video-file-field").hidden = true;
         form.elements.video_url.required = true;
         form.elements.video_file.required = false;
-        setStatus(videoFormStatus, "Video added.", "success");
+        setStatus(videoFormStatus, "Video added." + thumbnailWarning, thumbnailWarning ? "info" : "success");
         await loadVideos();
       } catch (error) {
         setStatus(videoFormStatus, `Could not add video: ${error.message}`);
