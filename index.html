@@ -591,6 +591,7 @@
     const videoFormStatus = document.getElementById("video-form-status");
     const playerStatus = document.getElementById("player-status");
     const categories = new Set();
+    const thumbnailCaptures = new Set();
     let activeCategory = "All";
     let currentUser = null;
     let isAdmin = false;
@@ -652,6 +653,33 @@
       return safeHttpsUrl(value);
     }
 
+    function generateMissingThumbnail(video) {
+      if (!isAdmin || video.thumbnail_url || thumbnailCaptures.has(video.id)) return;
+      thumbnailCaptures.add(video.id);
+      (async () => {
+        let source;
+        if (video.source_type === "upload") {
+          const { data, error } = await supabaseClient.storage
+            .from("videos-private")
+            .createSignedUrl(video.storage_path, 3600);
+          if (error) throw error;
+          source = data.signedUrl;
+        } else {
+          source = safeHttpsUrl(video.video_url);
+        }
+
+        const thumbnailUrl = await captureVideoThumbnail(source, false);
+        const { error } = await supabaseClient.from("videos")
+          .update({ thumbnail_url: thumbnailUrl })
+          .eq("id", video.id);
+        if (error) throw error;
+        video.thumbnail_url = thumbnailUrl;
+        renderVideos();
+      })().catch(error => {
+        setStatus(appStatus, "Could not generate a thumbnail for " + video.title + ": " + error.message, "error");
+      });
+    }
+
     function setAuthMode(mode) {
       authMode = mode;
       const signingUp = mode === "signup";
@@ -703,6 +731,7 @@
         image.src = fallbackThumbnail;
         setStatus(appStatus, `A thumbnail URL could not be used: ${error.message}`, "error");
       }
+      generateMissingThumbnail(video);
       thumbnail.append(image);
 
       const indicator = document.createElement("span");
