@@ -538,8 +538,9 @@
       <h2 id="auth-title">Welcome to Frame</h2>
       <p id="auth-description">Sign in or create a free account to watch member videos.</p>
       <form class="admin-form" id="auth-form">
-        <label class="field" id="display-name-field" hidden>Name
+        <label class="field" id="display-name-field" hidden>Name (optional)
           <input name="display_name" maxlength="80" autocomplete="name">
+          <span class="field-hint">Skip this and your email name will be used.</span>
         </label>
         <label class="field">Email
           <input name="email" type="email" autocomplete="email" required>
@@ -685,10 +686,10 @@
       const signingUp = mode === "signup";
       document.getElementById("auth-title").textContent = signingUp ? "Create your account" : "Welcome to Frame";
       document.getElementById("auth-description").textContent = signingUp
-        ? "Create a free account to watch member videos."
+        ? "Create a free account with your email and password. No email confirmation is needed when disabled in Supabase."
         : "Sign in to your account to watch member videos.";
       document.getElementById("display-name-field").hidden = !signingUp;
-      document.getElementById("auth-form").elements.display_name.required = signingUp;
+      document.getElementById("auth-form").elements.display_name.required = false;
       document.getElementById("auth-form").elements.password.autocomplete = signingUp ? "new-password" : "current-password";
       document.getElementById("auth-submit").textContent = signingUp ? "Create account" : "Sign in";
       document.getElementById("auth-mode-toggle").textContent = signingUp ? "Already have an account? Sign in" : "Create an account";
@@ -982,7 +983,7 @@
           : await supabaseClient.auth.signInWithPassword({ email, password });
         if (result.error) throw result.error;
         if (authMode === "signup" && !result.data.session) {
-          setStatus(authStatus, "Check your email to confirm your account, then sign in.");
+          setStatus(authStatus, "Email confirmation is enabled in Supabase. Turn off Authentication → Sign In / Providers → Email → Confirm email for instant sign-in.");
         } else {
           setStatus(authStatus, authMode === "signup" ? "Account created." : "Signed in.");
           await refreshApp(result.data.user);
