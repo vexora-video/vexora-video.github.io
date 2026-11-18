@@ -9,8 +9,8 @@ Frame is a static video site backed by Supabase Auth, Postgres, and private Stor
 
    `https://victor-m27.github.io/frame-video-site/`
 
-   Add that URL as a redirect URL as well. Keep email confirmation enabled if you want users to verify ownership of their email before signing in.
-3. Open the public site, create your account, and confirm the email if requested.
+   Add that URL as a redirect URL as well. To let new users sign in immediately, open **Authentication → Sign In / Providers → Email** and turn off **Confirm email**. Also make sure **Allow new users to sign up** is enabled in the Authentication settings.
+3. Open the public site and create an account with an email address and password. Email confirmation is not required when **Confirm email** is off; the display name is optional.
 4. In Supabase SQL Editor, replace the example email with your account email and run the administrator bootstrap statement at the bottom of `supabase.sql`. Reload the site. Admin Studio will then be available.
 5. Use Admin Studio to add videos, lock or unlock them, and assign trusted users the admin role.
 
