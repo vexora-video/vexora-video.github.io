@@ -627,7 +627,7 @@
     async function captureVideoThumbnail(source, isFile) {
       const objectUrl = isFile ? URL.createObjectURL(source) : null;
       const video = document.createElement("video");
-      video.muted = true; video.playsInline = true; video.preload = "auto";
+      video.muted = true; video.playsInline = true; video.preload = "metadata";
       if (!isFile) video.crossOrigin = "anonymous";
       try {
         const metadataReady = waitForVideoEvent(video, "loadedmetadata");
