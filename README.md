@@ -20,6 +20,7 @@ The site uses only the Supabase project URL and publishable key in the browser. 
 
 - Unlocked video records are visible to everyone. Locked records and their uploaded files require a signed-in account; only admins can add videos, change locks, or manage roles.
 - Uploaded files use the private `videos-private` bucket and are limited to 50 MB. Playback links are temporary signed URLs.
+- When adding a video, Frame captures a small JPEG thumbnail from the video if no thumbnail URL is supplied. This works for uploaded files and for external links that allow cross-origin frame capture; otherwise, provide a thumbnail URL.
 - A direct external video URL is not access-controlled by Frame. Anyone with that external URL may be able to watch it outside the site. Already-issued signed upload links can also remain usable until they expire.
 - Use direct HTTPS video-file URLs (for example MP4 or WebM), not YouTube watch-page URLs.
 
