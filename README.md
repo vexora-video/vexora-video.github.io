@@ -7,7 +7,7 @@ Vexora is a static video site backed by Supabase Auth, Postgres, and private Sto
 1. In the Supabase project, open **SQL Editor**, paste in [`supabase.sql`](./supabase.sql), and run it.
 2. In **Authentication → URL Configuration**, set the Site URL to:
 
-   `https://victor-m27.github.io/frame-video-site/`
+   `https://vexora-video.github.io/`
 
    Add that URL as a redirect URL as well. To let new users sign in immediately, open **Authentication → Sign In / Providers → Email** and turn off **Confirm email**. Also make sure **Allow new users to sign up** is enabled in the Authentication settings.
 3. Open the public site and create an account with an email address and password. Email confirmation is not required when **Confirm email** is off; the display name is optional.
