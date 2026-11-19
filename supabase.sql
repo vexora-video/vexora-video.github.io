@@ -1,4 +1,4 @@
--- Frame video platform schema.
+-- Vexora video platform schema.
 -- Run once in Supabase Dashboard -> SQL Editor using the project owner account.
 
 create table if not exists public.profiles (
