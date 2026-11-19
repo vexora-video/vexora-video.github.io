@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101114">
-  <title>Frame — Watch something good</title>
+  <title>Vexora — Watch something good</title>
   <style>
     :root {
       color-scheme: dark;
@@ -435,7 +435,7 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="topbar">
-    <a class="brand" href="#" aria-label="Frame home"><span class="brand-mark" aria-hidden="true">▶</span>frame</a>
+    <a class="brand" href="#" aria-label="Vexora home"><span class="brand-mark" aria-hidden="true">▶</span>Vexora</a>
     <nav class="main-nav" aria-label="Main navigation">
       <a class="active" href="#discover">Discover</a>
       <a href="#videos">Videos</a>
@@ -503,9 +503,9 @@
             </label>
             <label class="checkbox-row">
               <input name="is_locked" type="checkbox">
-              <span>Lock this video: require a signed-in account to view it in Frame.</span>
+              <span>Lock this video: require a signed-in account to view it in Vexora.</span>
             </label>
-            <p class="field-hint">External video links can still be shared outside Frame. Uploaded files use private storage and signed playback links.</p>
+            <p class="field-hint">External video links can still be shared outside Vexora. Uploaded files use private storage and signed playback links.</p>
             <button class="button" id="save-video" type="submit">Add video</button>
             <p class="auth-status" id="video-form-status" role="status" aria-live="polite"></p>
           </form>
@@ -535,7 +535,7 @@
 
   <dialog id="auth-dialog" aria-labelledby="auth-title">
     <div class="dialog-content">
-      <h2 id="auth-title">Welcome to Frame</h2>
+      <h2 id="auth-title">Welcome to Vexora</h2>
       <p id="auth-description">Sign in or create a free account to watch member videos.</p>
       <form class="admin-form" id="auth-form">
         <label class="field" id="display-name-field" hidden>Name (optional)
@@ -570,7 +570,7 @@
       </div>
       <button class="close-player" id="close-player" type="button" aria-label="Close video">×</button>
     </div>
-    <p class="disclosure">Locking a video limits access through Frame. External URLs and already-issued upload links may still be shared separately.</p>
+    <p class="disclosure">Locking a video limits access through Vexora. External URLs and already-issued upload links may still be shared separately.</p>
   </dialog>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -684,7 +684,7 @@
     function setAuthMode(mode) {
       authMode = mode;
       const signingUp = mode === "signup";
-      document.getElementById("auth-title").textContent = signingUp ? "Create your account" : "Welcome to Frame";
+      document.getElementById("auth-title").textContent = signingUp ? "Create your account" : "Welcome to Vexora";
       document.getElementById("auth-description").textContent = signingUp
         ? "Create a free account with your email and password. No email confirmation is needed when disabled in Supabase."
         : "Sign in to your account to watch member videos.";
